@@ -5,6 +5,7 @@ CONFIG -= qt
 
 SOURCES += \
         administrador.cpp \
+        funciones.cpp \
         main.cpp \
         usuario.cpp
 

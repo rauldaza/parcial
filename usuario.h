@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <map>
 
 using namespace std;
 
@@ -13,19 +14,22 @@ private:
     string Npelicula;
     string Nasiento;
     string Npago;
+    int id;
 public:
     usuario();
     usuario(string user);
     void pelicula();
-    void asiento();
+    void asiento(map<int, char[15][20]>);
     void tipo_asiento();
-    void pago();
+    bool pago();
     string getNpelicula() const;
     void setNpelicula(const string &value);
     string getNasiento() const;
     void setNasiento(const string &value);
     string getNpago() const;
     void setNpago(const string &value);
+    int getId() const;
+    void setId(int value);
 };
 
 #endif // USUARIO_H
