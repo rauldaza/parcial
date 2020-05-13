@@ -14,6 +14,7 @@ private:
 public:
     administrador();
     administrador(string admi, string password);
+    bool confirmacion();
     void modificarPeliculas();
     void guardar();
 };

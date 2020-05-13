@@ -97,5 +97,5 @@ void administrador::modificarPeliculas()
 
 void administrador::guardar()
 {
-
+    
 }

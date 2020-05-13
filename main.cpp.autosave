@@ -1,14 +1,14 @@
 #include <iostream>
 #include <queue>
 #include "administrador.h"
-#include "funciones.h"
 #include "usuario.h"
 #include <map>
+
 using namespace std;
 
 int main()
 {
-    map <int, char[15][20]> asientos;
+    map <string, char[15][20]> asientos;
     for(int i=1; i<=contador_peliculas(); i++)
     {
         asientos[i];
@@ -33,7 +33,7 @@ int main()
             administrador admi(user, password);
             if(admi.confirmacion()==true)
             {
-
+                
             }
             else
             {

@@ -76,9 +76,11 @@ void usuario::pelicula()
     this->setNpelicula(nombre);
 }
 
-void usuario::asiento()
+void usuario::asiento(map<string, char[15][20]> lugares)
 {
-
+    cout << "escoga un asiento" << endl;
+    imprimir_lugares(lugares[this->Npelicula]);
+    reservar_lugares(lugares[this->Npelicula]);
 }
 
 void usuario::tipo_asiento()

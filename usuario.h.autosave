@@ -3,6 +3,8 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <map>
+#include "funciones.h"
 
 using namespace std;
 
@@ -17,7 +19,7 @@ public:
     usuario();
     usuario(string user);
     void pelicula();
-    void asiento();
+    void asiento(map<string, char[15][20]>);
     void tipo_asiento();
     void pago();
     string getNpelicula() const;
