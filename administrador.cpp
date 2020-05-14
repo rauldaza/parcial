@@ -1,5 +1,25 @@
 #include "administrador.h"
 
+string administrador::getAdmi() const
+{
+    return admi;
+}
+
+void administrador::setAdmi(const string &value)
+{
+    admi = value;
+}
+
+string administrador::getPassword() const
+{
+    return password;
+}
+
+void administrador::setPassword(const string &value)
+{
+    password = value;
+}
+
 administrador::administrador()
 {
 

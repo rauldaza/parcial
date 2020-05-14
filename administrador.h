@@ -17,6 +17,10 @@ public:
     bool confirmacion();
     void modificarPeliculas();
     void guardar();
+    string getAdmi() const;
+    void setAdmi(const string &value);
+    string getPassword() const;
+    void setPassword(const string &value);
 };
 
 #endif // ADMINISTRADOR_H
