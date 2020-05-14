@@ -4,6 +4,7 @@
 #include <string>
 #include <fstream>
 #include <map>
+#include <stdio.h>
 
 using namespace std;
 
@@ -11,6 +12,7 @@ class usuario
 {
 private:
     string user;
+    string sala;
     string Npelicula;
     string Nasiento;
     string Npago;
@@ -33,6 +35,8 @@ public:
     void setId(int value);
     string getPuesto() const;
     void setPuesto(const string &value);
+    string getSala() const;
+    void setSala(const string &value);
 };
 
 #endif // USUARIO_H

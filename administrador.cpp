@@ -55,7 +55,7 @@ bool administrador::confirmacion()
 void administrador::modificarPeliculas()
 {
     char decision;
-    string nombre, genero, clasificacion, duracion, sala, hora, asientos="0/140", linea;
+    string nombre, genero, clasificacion, duracion, sala_uno, sala_dos, sala_tres , hora, asientos="0/140", linea;
     do{
         fstream peliculas;
         peliculas.open("peliculas.txt", ios::app | ios::in);
@@ -70,14 +70,20 @@ void administrador::modificarPeliculas()
             getline(cin, genero);
             cout << "duracion: ";
             cin >> duracion;
-            cout << "sala: ";
-            cin >> sala;
+            cout << "sala 2D: ";
+            cin >> sala_uno;
+            cout << "sala 3D: ";
+            cin >> sala_dos;
+            cout << "sala 4DX: ";
+            cin >> sala_tres;
             cout << "hora: ";
             cin >> hora;
             cout << "clasificacion: ";
             cin >> clasificacion;
             peliculas << "Nombre: " << nombre << ". Genero: " << genero << ". Duracion: " << duracion
-                      << ". Sala: " << sala << ". Hora: " << hora << ". Asientos: " << asientos
+                      << ". Sala 2D: " << sala_uno << ", Asientos: " << asientos << ". sala 3D: "
+                      << sala_dos << ", Asientos: " << asientos << ". sala 4DX: " << sala_tres
+                      << ", Asientos: " << asientos << ". Hora: " << hora
                       << ". Clasificacion: " << clasificacion << "." << endl;
             peliculas.close();
         }
