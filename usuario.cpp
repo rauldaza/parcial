@@ -41,6 +41,16 @@ void usuario::setId(int value)
     id = value;
 }
 
+string usuario::getPuesto() const
+{
+    return puesto;
+}
+
+void usuario::setPuesto(const string &value)
+{
+    puesto = value;
+}
+
 usuario::usuario()
 {
 
@@ -53,7 +63,7 @@ usuario::usuario(string user)
 
 void usuario::pelicula()
 {
-    int id=1, total=0, id_user, inicio, fin, contador=0;
+    int id=1, total=0, id_user, contador=0;
     string linea, nombre;
     ifstream peliculas;
     peliculas.open("peliculas.txt");
@@ -82,6 +92,8 @@ void usuario::pelicula()
     cout << "-------------------------------------------" << endl;
     cout << "escriba el id de la pelicula que desea ver: ";
     cin >> id_user;
+    peliculas.clear();
+    peliculas.seekg(0, peliculas.beg);
     while(peliculas.good() && id_user!=contador)
     {
         getline(peliculas, linea);
@@ -91,13 +103,6 @@ void usuario::pelicula()
     this->setId(id_user);
     nombre = linea.substr(8, linea.find('.')-8);
     this->setNpelicula(nombre);
-}
-
-void usuario::asiento(map<int, char[15][20]> lugares)
-{
-    cout << "escoga un asiento" << endl;
-    imprimir_lugares(lugares[this->getId()]);
-    reservar_lugares(lugares[this->getId()]);
 }
 
 void usuario::tipo_asiento()
@@ -123,7 +128,20 @@ void usuario::tipo_asiento()
     }
 }
 
-bool usuario::pago()
+void usuario::asiento(map <int, map<int, char[15][20]>> &asientostotal)
+{
+    string puesto;
+    int lugar;
+    cout << "escoga un asiento" << endl;
+    if(this->Nasiento=="2D") lugar=1;
+    else if(this->Nasiento=="3D") lugar=2;
+    else if(this->Nasiento=="4DX") lugar=3;
+    imprimir_lugares(asientostotal[this->getId()][lugar]);
+    puesto = reservar_lugares(asientostotal[this->getId()][lugar]);
+    this->setPuesto(puesto);
+}
+
+bool usuario::pago(map <int, map<int, char[15][20]>> &asientostotal)
 {
     char opcion;
     cout << "confirmacion de pago" << endl;
@@ -147,7 +165,12 @@ bool usuario::pago()
     }
     else if(opcion=='N' || opcion=='n')
     {
+        int lugar;
+        if(this->Nasiento=="2D") lugar=1;
+        else if(this->Nasiento=="3D") lugar=2;
+        else if(this->Nasiento=="4DX") lugar=3;
         cout << "compra cancelada" << endl;
+        cancelar_lugares(asientostotal[this->getId()][lugar], (this->getPuesto())[0], int((this->getPuesto())[1])-48);
         this->~usuario();
     }
     return false;

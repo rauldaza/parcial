@@ -8,6 +8,34 @@ using namespace std;
 
 int main()
 {
+    string user, password;
+    administrador admi(user, password);
+    cout << "Para iniciar el programa, inicie como administrador" << endl;
+    do{
+        cout << "usuario: ";
+        cin >> user;
+        cout << "contasena: ";
+        cin >> password;
+        if(admi.confirmacion()==true)
+        {
+            break;
+        }
+        else
+        {
+            cout << "usuario y/o contrasena invalida" << endl;
+        }
+    }while(true);
+    int opcion;
+    cout << "CINE" << endl;
+    cout << "Administrador, desea iniciar los registros de los usuarios o antes va a modificar "
+            "la lista de peliculas" << endl;
+    cout << "1. iniciar con registro de los usuarios" << endl;
+    cout << "2. modificar lista de peliculas" << endl;
+    cin >> opcion;
+    if(opcion==1)
+    {
+        admi.modificarPeliculas();
+    }
     queue <usuario> usuarios;
     map <int, char[15][20]> asientos;
     map <int, map<int, char[15][20]>> asientostotal;
@@ -39,7 +67,7 @@ int main()
                 usuarios.push(user);
             }
         }
-        else if(opcion=='a' || opcion=='A')
+        /*else if(opcion=='a' || opcion=='A')
         {
             string user, password;
             cout << "Menu de administrador" << endl;
@@ -70,6 +98,6 @@ int main()
                 cout << "usuarario y/o contrasena invalido" << endl;
                 admi.~administrador();
             }
-        }
+        }*/
     }
 }

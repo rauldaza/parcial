@@ -44,10 +44,11 @@ void imprimir_lugares(char lugares[15][20])
         cout << endl;
     }
 }
-void reservar_lugares(char lugares[15][20])
+string reservar_lugares(char lugares[15][20])
 {
     char fila;
     int columna;
+    string puesto;
     cout << "ingrese la fila: ";
     cin >> fila;
     cout << "ingrese la columna: ";
@@ -61,6 +62,15 @@ void reservar_lugares(char lugares[15][20])
         cin >> columna;
     }
     lugares[fila-65][columna-1] = '+';
+    string a(1, fila);
+    string b(1, char(columna+48));
+    puesto = a + b;
+    return puesto;
+}
+
+void cancelar_lugares(char lugares[15][20], char fila, int columna)
+{
+    lugares[fila-65][columna-1] = '-';
 }
 
 int contador_peliculas()

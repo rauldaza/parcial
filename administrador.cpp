@@ -15,7 +15,7 @@ bool administrador::confirmacion()
 {
     string user, password;
     ifstream administradores;
-    administradores.open("administadores.txt");
+    administradores.open("administradores.txt");
     while(administradores.good())
     {
         administradores >> user;

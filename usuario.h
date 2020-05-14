@@ -14,14 +14,15 @@ private:
     string Npelicula;
     string Nasiento;
     string Npago;
+    string puesto;
     int id;
 public:
     usuario();
     usuario(string user);
     void pelicula();
-    void asiento(map<int, char[15][20]>);
     void tipo_asiento();
-    bool pago();
+    void asiento(map <int, map<int, char[15][20]>> &asientostotal);
+    bool pago(map <int, map<int, char[15][20]>> &asientostotal);
     string getNpelicula() const;
     void setNpelicula(const string &value);
     string getNasiento() const;
@@ -30,6 +31,8 @@ public:
     void setNpago(const string &value);
     int getId() const;
     void setId(int value);
+    string getPuesto() const;
+    void setPuesto(const string &value);
 };
 
 #endif // USUARIO_H
