@@ -14,8 +14,10 @@ private:
     string user;
     string sala;
     string Npelicula;
+    //tipo de asiento
     string Nasiento;
     string Npago;
+    //puesto en la sala
     string puesto;
     int id;
 public:

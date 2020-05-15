@@ -146,23 +146,26 @@ void administrador::guardar()
     while(peliculas.good())
     {
         getline(peliculas, linea);
+        int coma1 = linea.find(",");
+        int coma2 = linea.find(",", coma1+1);
+        int coma3 = linea.find(",", coma2+1);
         if(!linea.empty())
         {
-            int initial_loc = linea.find("2D");
+            int initial_loc = coma1;
             int final_loc = linea.find("/140. sala 3D:");
             string sillas_ocup = "0";
             //modifica la linea original, reiniciando el contador de sillas "2D" ocupadas en la sala
-            linea = linea.substr(0, initial_loc+26) + sillas_ocup + linea.substr(final_loc, linea.length()-final_loc);
-            initial_loc = linea.find("3D");
+            linea = linea.substr(0, initial_loc+21) + sillas_ocup + linea.substr(final_loc, linea.length()-final_loc);
+            initial_loc = coma2;
             final_loc = linea.find("/140. sala 4DX:");
             sillas_ocup = "0";
             //modifica la linea original, reiniciando el contador de sillas "3D" ocupadas en la sala
-            linea = linea.substr(0, initial_loc+26) + sillas_ocup + linea.substr(final_loc, linea.length()-final_loc);
-            initial_loc = linea.find("4DX");
+            linea = linea.substr(0, initial_loc+21) + sillas_ocup + linea.substr(final_loc, linea.length()-final_loc);
+            initial_loc = coma3;
             final_loc = linea.find("/140. Hora:");
             sillas_ocup = "0";
             //modifica la linea original, reiniciando el contador de sillas "4DX" ocupadas en la sala
-            linea = linea.substr(0, initial_loc+26) + sillas_ocup + linea.substr(final_loc, linea.length()-final_loc);
+            linea = linea.substr(0, initial_loc+21) + sillas_ocup + linea.substr(final_loc, linea.length()-final_loc);
             temp << linea << endl;
         }
     }

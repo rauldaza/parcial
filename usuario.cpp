@@ -177,11 +177,14 @@ bool usuario::disponibilidad_asientos()
         getline(peliculas, linea);
     }
     //verifica si la sala (que esta determinada por el tipo de asiento) esta llena o no
+    int coma1 = linea.find(",");
+    int coma2 = linea.find(",", coma1+1);
+    int coma3 = linea.find(",", coma2+1);
     if(this->Nasiento=="2D")
     {
-        initial_loc = linea.find("2D");
+        initial_loc = coma1;
         final_loc = linea.find("/140. sala 3D:");
-        sillas_ocup = linea.substr(initial_loc+26,final_loc-initial_loc-26);
+        sillas_ocup = linea.substr(initial_loc+21,final_loc-initial_loc-21);
         if(sillas_ocup=="140")
         {
             cout << "la sala esta completamente llena, por favor, eliga otra sala o pelicula" << endl;
@@ -194,9 +197,9 @@ bool usuario::disponibilidad_asientos()
     }
     else if(this->Nasiento=="3D")
     {
-        initial_loc = linea.find("3D");
+        initial_loc = coma2;
         final_loc = linea.find("/140. sala 4DX:");
-        sillas_ocup = linea.substr(initial_loc+26,final_loc-initial_loc-26);
+        sillas_ocup = linea.substr(initial_loc+21,final_loc-initial_loc-21);
         if(sillas_ocup=="140")
         {
             cout << "la sala esta completamente llena, por favor, eliga otra sala o pelicula" << endl;
@@ -209,9 +212,9 @@ bool usuario::disponibilidad_asientos()
     }
     else if(this->Nasiento=="4DX")
     {
-        initial_loc = linea.find("4DX");
+        initial_loc = coma3;
         final_loc = linea.find("/140. Hora:");
-        sillas_ocup = linea.substr(initial_loc+26,final_loc-initial_loc-26);
+        sillas_ocup = linea.substr(initial_loc+21,final_loc-initial_loc-21);
         if(sillas_ocup=="140")
         {
             cout << "la sala esta completamente llena, por favor, eliga otra sala o pelicula" << endl;
@@ -283,32 +286,35 @@ bool usuario::pago(map <int, map<int, char[15][20]>> &asientostotal)
             getline(peliculas, linea);
             if(linea.find(this->getNpelicula())!=string::npos)
             {
+                int coma1 = linea.find(",");
+                int coma2 = linea.find(",", coma1+1);
+                int coma3 = linea.find(",", coma2+1);
                 if(this->Nasiento=="2D")
                 {
-                    int initial_loc = linea.find("2D");
+                    int initial_loc = coma1;
                     int final_loc = linea.find("/140. sala 3D:");
                     //aqui se extrae la cantidad de sillas
-                    string sillas_ocup = linea.substr(initial_loc+26,final_loc-initial_loc-26);
+                    string sillas_ocup = linea.substr(initial_loc+21,final_loc-initial_loc-21);
                     //aqui se aumenta la cantidad de sillas
                     sillas_ocup = to_string(stoi(sillas_ocup)+1);
                     //aqui se vuelve a fusionar la informacion
-                    linea = linea.substr(0, initial_loc+26) + sillas_ocup + linea.substr(final_loc, linea.length()-final_loc);
+                    linea = linea.substr(0, initial_loc+21) + sillas_ocup + linea.substr(final_loc, linea.length()-final_loc);
                 }
                 else if(this->Nasiento=="3D")
                 {
-                    int initial_loc = linea.find("3D");
+                    int initial_loc = coma2;
                     int final_loc = linea.find("/140. sala 4DX:");
-                    string sillas_ocup = linea.substr(initial_loc+26,final_loc-initial_loc-26);
+                    string sillas_ocup = linea.substr(initial_loc+21,final_loc-initial_loc-21);
                     sillas_ocup = to_string(stoi(sillas_ocup)+1);
-                    linea = linea.substr(0, initial_loc+26) + sillas_ocup + linea.substr(final_loc, linea.length()-final_loc);
+                    linea = linea.substr(0, initial_loc+21) + sillas_ocup + linea.substr(final_loc, linea.length()-final_loc);
                 }
                 else if(this->Nasiento=="4DX")
                 {
-                    int initial_loc = linea.find("4DX");
+                    int initial_loc = coma3;
                     int final_loc = linea.find("/140. Hora:");
-                    string sillas_ocup = linea.substr(initial_loc+26,final_loc-initial_loc-26);
+                    string sillas_ocup = linea.substr(initial_loc+21,final_loc-initial_loc-21);
                     sillas_ocup = to_string(stoi(sillas_ocup)+1);
-                    linea = linea.substr(0, initial_loc+26) + sillas_ocup + linea.substr(final_loc, linea.length()-final_loc);
+                    linea = linea.substr(0, initial_loc+21) + sillas_ocup + linea.substr(final_loc, linea.length()-final_loc);
                 }
             }
             if(!linea.empty())
@@ -355,7 +361,7 @@ bool usuario::pago(map <int, map<int, char[15][20]>> &asientostotal)
         cout << "compra cancelada" << endl;
         //aqui se libera el lugar escogido
         cancelar_lugares(asientostotal[this->getId()][lugar], (this->getPuesto())[0], int((this->getPuesto())[1])-48);
-        this->~usuario();
+
     }
     return false;
 }
