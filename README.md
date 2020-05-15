@@ -1,3 +1,3 @@
 # parcial
 link al video de sustentacion
-https://youtu.be/VSEIJ-IkTL4
+https://www.youtube.com/watch?v=sp-Cd67Liks
