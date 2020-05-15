@@ -1,0 +1,5 @@
+********************************************************
+nombre: pepe. pelicula: los avengers. tipo de asiento: 4DX. sala:  12. puesto: A1. pago: 20000
+********************************************************
+nombre: pepe. pelicula: los avengers. tipo de asiento: 2D. sala: 10. puesto: A1. pago: 10000
+nombre: carlos. pelicula: alicia en el pais de las maravillas. tipo de asiento: 4DX. sala:  17. puesto: B6. pago: 20000

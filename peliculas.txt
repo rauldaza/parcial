@@ -1,0 +1,2 @@
+Nombre: los avengers. Genero: accion. Duracion: 100min. Sala 2D: 10, Asientos ocupados: 140/140. sala 3D: 11, Asientos ocupados: 0/140. sala 4DX: 12, Asientos ocupados: 0/140. Hora: 10pm. Clasificacion: 15+.
+Nombre: alicia en el pais de las maravillas. Genero: ficcion. Duracion: 10min. Sala 2D: 15, Asientos ocupados: 0/140. sala 3D: 16, Asientos ocupados: 0/140. sala 4DX: 17, Asientos ocupados: 0/140. Hora: 2pm. Clasificacion: 10+.
