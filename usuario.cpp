@@ -61,6 +61,16 @@ void usuario::setSala(const string &value)
     sala = value;
 }
 
+string usuario::getUser() const
+{
+    return user;
+}
+
+void usuario::setUser(const string &value)
+{
+    user = value;
+}
+
 usuario::usuario()
 {
 
@@ -71,20 +81,17 @@ usuario::usuario(string user)
     this->user=user;
 }
 
+//Da a escoger las peliculas al usuario
 void usuario::pelicula()
 {
     int id=1, total=0, id_user, contador=0;
     string linea, nombre;
+    total = contador_peliculas();
     ifstream peliculas;
     peliculas.open("peliculas.txt");
-    while (peliculas.good())
-    {
-        getline(peliculas, linea);
-        total++;
-    }
-    peliculas.clear();
-    peliculas.seekg(0, peliculas.beg);
-    while(id!=total)
+    cout << "*tenga en cuenta si hay o no asientos disponibles en la sala deseada" << endl;
+    //imprime las peliculas disponibles
+    while(id<=total)
     {
         cout << "-------------------------------------------" << endl;
         peliculas >> linea;
@@ -96,7 +103,7 @@ void usuario::pelicula()
         }
         cout << endl;
         getline(peliculas, linea);
-        cout << "id" << ": " << id << ". " << linea << endl;
+        cout << "id" << ": " << id << ". " << endl << linea << endl;
         id++;
     }
     cout << "-------------------------------------------" << endl;
@@ -104,6 +111,7 @@ void usuario::pelicula()
     cin >> id_user;
     peliculas.clear();
     peliculas.seekg(0, peliculas.beg);
+    //busca la pelicula seleccionada para posteriormente sacar el nombre
     while(peliculas.good() && id_user!=contador)
     {
         getline(peliculas, linea);
@@ -115,6 +123,7 @@ void usuario::pelicula()
     this->setNpelicula(nombre);
 }
 
+//da a escoger los tipos de asientos disponibles y guarda la sala en donde esta ese tipo de asiento
 void usuario::tipo_asiento()
 {
     imprimi_asientos();
@@ -139,6 +148,7 @@ void usuario::tipo_asiento()
     ifstream peliculas;
     string linea;
     peliculas.open("peliculas.txt");
+    //busca la pelicula seleccionada para sacar la sala en donde esta el asiento seleccionado
     while(peliculas.good())
     {
         getline(peliculas, linea);
@@ -150,13 +160,82 @@ void usuario::tipo_asiento()
             this->setSala(sala);
         }
     }
+    peliculas.close();
 }
 
+//verifica si quedan todavia asientos en la sala seleccionada
+bool usuario::disponibilidad_asientos()
+{
+    ifstream peliculas;
+    string linea;
+    string sillas_ocup;
+    int initial_loc, final_loc;
+    peliculas.open("peliculas.txt");
+    //busca pelicula
+    while(peliculas.good() && linea.find(Npelicula)==string::npos)
+    {
+        getline(peliculas, linea);
+    }
+    //verifica si la sala (que esta determinada por el tipo de asiento) esta llena o no
+    if(this->Nasiento=="2D")
+    {
+        initial_loc = linea.find("2D");
+        final_loc = linea.find("/140. sala 3D:");
+        sillas_ocup = linea.substr(initial_loc+26,final_loc-initial_loc-26);
+        if(sillas_ocup=="140")
+        {
+            cout << "la sala esta completamente llena, por favor, eliga otra sala o pelicula" << endl;
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+    else if(this->Nasiento=="3D")
+    {
+        initial_loc = linea.find("3D");
+        final_loc = linea.find("/140. sala 4DX:");
+        sillas_ocup = linea.substr(initial_loc+26,final_loc-initial_loc-26);
+        if(sillas_ocup=="140")
+        {
+            cout << "la sala esta completamente llena, por favor, eliga otra sala o pelicula" << endl;
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+    else if(this->Nasiento=="4DX")
+    {
+        initial_loc = linea.find("4DX");
+        final_loc = linea.find("/140. Hora:");
+        sillas_ocup = linea.substr(initial_loc+26,final_loc-initial_loc-26);
+        if(sillas_ocup=="140")
+        {
+            cout << "la sala esta completamente llena, por favor, eliga otra sala o pelicula" << endl;
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+
+    }
+}
+
+/*
+ * da a escoger la posicion del asiento en la sala para poder guardarlo en la matriz que contiene los lugares
+ * de la sala
+*/
 void usuario::asiento(map <int, map<int, char[15][20]>> &asientostotal)
 {
     string puesto;
     int lugar;
+    cout << "*los lugares con un '-' estan vacios, los lugares con un '+' se encuentran ocupados" << endl;
     cout << "escoga un asiento" << endl;
+    //aqui se busca la matriz que contiene los lugares de la sala
     if(this->Nasiento=="2D") lugar=1;
     else if(this->Nasiento=="3D") lugar=2;
     else if(this->Nasiento=="4DX") lugar=3;
@@ -165,6 +244,7 @@ void usuario::asiento(map <int, map<int, char[15][20]>> &asientostotal)
     this->setPuesto(puesto);
 }
 
+//le pregunta al usuario si confirma o cancela la compra de la entrada
 bool usuario::pago(map <int, map<int, char[15][20]>> &asientostotal)
 {
     char opcion;
@@ -173,6 +253,7 @@ bool usuario::pago(map <int, map<int, char[15][20]>> &asientostotal)
     cin >> opcion;
     if(opcion=='S' || opcion=='s')
     {
+        //agrega el costo del tipo de asiento escogido por el usuario
         if(this->getNasiento()=="2D")
         {
             this->setNpago("10000");
@@ -181,10 +262,17 @@ bool usuario::pago(map <int, map<int, char[15][20]>> &asientostotal)
         {
             this->setNpago("14000");
         }
-        else if(this->getNasiento()=="4D")
+        else if(this->getNasiento()=="4DX")
         {
             this->setNpago("20000");
         }
+        /*
+        *ya que el usuario compro la entrada, aumenta en 1 la cantidad de sillas ocupadas en la sala
+        *para ello se busca la pelicula en el archivo "peliculas.txt", se extrae la cantidad de sillas
+        *cupadas para aumentarlas, luego se toma la informacion que habia antes y despues del numero
+        *de sillas ocupadas y se vuelve a fusionar (ya con la cantidad de sillas modificadas). esa
+        *informacion fusionada se agregar a un archivo temp que reemplazara al archivo peliculas
+        */
         ifstream peliculas;
         ofstream temp;
         string linea;
@@ -199,25 +287,28 @@ bool usuario::pago(map <int, map<int, char[15][20]>> &asientostotal)
                 {
                     int initial_loc = linea.find("2D");
                     int final_loc = linea.find("/140. sala 3D:");
-                    string sillas_ocup = linea.substr(initial_loc+17,final_loc-initial_loc-17);
+                    //aqui se extrae la cantidad de sillas
+                    string sillas_ocup = linea.substr(initial_loc+26,final_loc-initial_loc-26);
+                    //aqui se aumenta la cantidad de sillas
                     sillas_ocup = to_string(stoi(sillas_ocup)+1);
-                    linea = linea.substr(0, initial_loc+17) + sillas_ocup + linea.substr(final_loc, linea.length()-final_loc);
+                    //aqui se vuelve a fusionar la informacion
+                    linea = linea.substr(0, initial_loc+26) + sillas_ocup + linea.substr(final_loc, linea.length()-final_loc);
                 }
                 else if(this->Nasiento=="3D")
                 {
                     int initial_loc = linea.find("3D");
                     int final_loc = linea.find("/140. sala 4DX:");
-                    string sillas_ocup = linea.substr(initial_loc+17,final_loc-initial_loc-17);
+                    string sillas_ocup = linea.substr(initial_loc+26,final_loc-initial_loc-26);
                     sillas_ocup = to_string(stoi(sillas_ocup)+1);
-                    linea = linea.substr(0, initial_loc+17) + sillas_ocup + linea.substr(final_loc, linea.length()-final_loc);
+                    linea = linea.substr(0, initial_loc+26) + sillas_ocup + linea.substr(final_loc, linea.length()-final_loc);
                 }
                 else if(this->Nasiento=="4DX")
                 {
                     int initial_loc = linea.find("4DX");
                     int final_loc = linea.find("/140. Hora:");
-                    string sillas_ocup = linea.substr(initial_loc+17,final_loc-initial_loc-17);
+                    string sillas_ocup = linea.substr(initial_loc+26,final_loc-initial_loc-26);
                     sillas_ocup = to_string(stoi(sillas_ocup)+1);
-                    linea = linea.substr(0, initial_loc+17) + sillas_ocup + linea.substr(final_loc, linea.length()-final_loc);
+                    linea = linea.substr(0, initial_loc+26) + sillas_ocup + linea.substr(final_loc, linea.length()-final_loc);
                 }
             }
             if(!linea.empty())
@@ -229,15 +320,40 @@ bool usuario::pago(map <int, map<int, char[15][20]>> &asientostotal)
         temp.close();
         remove("peliculas.txt");
         rename("temp.txt", "peliculas.txt");
+        /*
+         * cuando el usuario finaliza su compra se genera un reporte de la compra con la informacion
+         * importante, que se guardara en el archivo reporte
+        */
+        ofstream reporte;
+        reporte.open("reporte.txt", ios::app);
+        reporte << "nombre: "<< this->getUser() << ". pelicula: " << this->getNpelicula() << ". tipo de asiento: "
+                << this->getNasiento() << ". sala: " << this->getSala() << ". puesto: " << this->getPuesto()
+                << ". pago: " << this->getNpago() << endl;
+        reporte.close();
         return true;
     }
+    /*
+     * si el usuario decide cancela la compra se elimina el usuario y se libera el asiento que anteriormente
+     * habia escogido
+    */
     else if(opcion=='N' || opcion=='n')
     {
         int lugar;
-        if(this->Nasiento=="2D") lugar=1;
-        else if(this->Nasiento=="3D") lugar=2;
-        else if(this->Nasiento=="4DX") lugar=3;
+        //aqui se busca la matriz que contiene el asiento que habia escogido el usuario
+        if(this->Nasiento=="2D")
+        {
+            lugar=1;
+        }
+        else if(this->Nasiento=="3D")
+        {
+            lugar=2;
+        }
+        else if(this->Nasiento=="4DX")
+        {
+            lugar=3;
+        }
         cout << "compra cancelada" << endl;
+        //aqui se libera el lugar escogido
         cancelar_lugares(asientostotal[this->getId()][lugar], (this->getPuesto())[0], int((this->getPuesto())[1])-48);
         this->~usuario();
     }

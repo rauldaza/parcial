@@ -31,6 +31,7 @@ administrador::administrador(string admi, string password)
     this->password = password;
 }
 
+//verifica si la cuenta ingresada es valida o no
 bool administrador::confirmacion()
 {
     string user, password;
@@ -52,6 +53,7 @@ bool administrador::confirmacion()
     return false;
 }
 
+//agrega o elimina peliculas del archivo "peliculas.txt"
 void administrador::modificarPeliculas()
 {
     char decision;
@@ -70,20 +72,21 @@ void administrador::modificarPeliculas()
             getline(cin, genero);
             cout << "duracion: ";
             cin >> duracion;
-            cout << "sala 2D: ";
+            cout << "numero de sala 2D: ";
             cin >> sala_uno;
-            cout << "sala 3D: ";
+            cout << "numero de sala 3D: ";
             cin >> sala_dos;
-            cout << "sala 4DX: ";
+            cout << "numero de sala 4DX: ";
             cin >> sala_tres;
             cout << "hora: ";
             cin >> hora;
             cout << "clasificacion: ";
             cin >> clasificacion;
+            //agrega toda la informacion suministrada al archivo peliculas
             peliculas << "Nombre: " << nombre << ". Genero: " << genero << ". Duracion: " << duracion
-                      << ". Sala 2D: " << sala_uno << ", Asientos: " << asientos << ". sala 3D: "
-                      << sala_dos << ", Asientos: " << asientos << ". sala 4DX: " << sala_tres
-                      << ", Asientos: " << asientos << ". Hora: " << hora
+                      << ". Sala 2D: " << sala_uno << ", Asientos ocupados: " << asientos << ". sala 3D: "
+                      << sala_dos << ", Asientos ocupados: " << asientos << ". sala 4DX: " << sala_tres
+                      << ", Asientos ocupados: " << asientos << ". Hora: " << hora
                       << ". Clasificacion: " << clasificacion << "." << endl;
             peliculas.close();
         }
@@ -92,17 +95,25 @@ void administrador::modificarPeliculas()
             ofstream temp;
             temp.open("temp.txt");
             cout << "catalogo de peliculas" << endl;
+            //imprime el catalogo de peliculas para que sea mas facil ver cual eliminar
             while(peliculas.good())
             {
                 getline(peliculas, linea);
                 if(!linea.empty())
+                {
+                    cout << "---------------------------------" << endl;
                     cout << linea << endl;
+                }
             }
             peliculas.clear();
             peliculas.seekg(0, peliculas.beg);
             cout << "eliminar" << endl;
             cout << "nombre: ";
             cin >> nombre;
+            /*
+             * elimina la pelicula nombrada por el administrador, pasa todas las peliculas a un archivo temp
+             * excepto la pelicula nombrada (el archivo temp pasara a ser el nuevo archivo de peliculas)
+            */
             while(peliculas.good())
             {
                 getline(peliculas, linea);
@@ -121,7 +132,42 @@ void administrador::modificarPeliculas()
     }while(decision=='s' || decision=='S');
 }
 
+/*
+ * guarda las peliculas reiniciando el contador de sillas ocupadas por sala para que la proxima vez que
+ * se inicie el programa el contador de sillas este en cero
+*/
 void administrador::guardar()
 {
-
+    ifstream peliculas;
+    ofstream temp;
+    string linea;
+    peliculas.open("peliculas.txt");
+    temp.open("temp.txt");
+    while(peliculas.good())
+    {
+        getline(peliculas, linea);
+        if(!linea.empty())
+        {
+            int initial_loc = linea.find("2D");
+            int final_loc = linea.find("/140. sala 3D:");
+            string sillas_ocup = "0";
+            //modifica la linea original, reiniciando el contador de sillas "2D" ocupadas en la sala
+            linea = linea.substr(0, initial_loc+26) + sillas_ocup + linea.substr(final_loc, linea.length()-final_loc);
+            initial_loc = linea.find("3D");
+            final_loc = linea.find("/140. sala 4DX:");
+            sillas_ocup = "0";
+            //modifica la linea original, reiniciando el contador de sillas "3D" ocupadas en la sala
+            linea = linea.substr(0, initial_loc+26) + sillas_ocup + linea.substr(final_loc, linea.length()-final_loc);
+            initial_loc = linea.find("4DX");
+            final_loc = linea.find("/140. Hora:");
+            sillas_ocup = "0";
+            //modifica la linea original, reiniciando el contador de sillas "4DX" ocupadas en la sala
+            linea = linea.substr(0, initial_loc+26) + sillas_ocup + linea.substr(final_loc, linea.length()-final_loc);
+            temp << linea << endl;
+        }
+    }
+    peliculas.close();
+    temp.close();
+    remove("peliculas.txt");
+    rename("temp.txt", "peliculas.txt");
 }

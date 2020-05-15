@@ -23,6 +23,7 @@ public:
     usuario(string user);
     void pelicula();
     void tipo_asiento();
+    bool disponibilidad_asientos();
     void asiento(map <int, map<int, char[15][20]>> &asientostotal);
     bool pago(map <int, map<int, char[15][20]>> &asientostotal);
     string getNpelicula() const;
@@ -37,6 +38,8 @@ public:
     void setPuesto(const string &value);
     string getSala() const;
     void setSala(const string &value);
+    string getUser() const;
+    void setUser(const string &value);
 };
 
 #endif // USUARIO_H
